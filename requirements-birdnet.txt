@@ -1,0 +1,12 @@
+# Teacher env — Python 3.11, isolated from main TF env
+# Install into .venv-birdnet only.
+birdnetlib        # clean Python wrapper around birdnet-analyzer
+birdnet-analyzer  # the actual BirdNET model from Cornell (kahst)
+librosa           # audio loading and resampling
+soundfile
+requests
+numpy
+pandas
+tqdm
+ipykernel         # so this env can be selected as a Jupyter kernel
+ipywidgets        # required by tqdm.notebook / tqdm.auto in Jupyter

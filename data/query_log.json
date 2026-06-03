@@ -1,0 +1,68 @@
+{
+  "American Robin": [
+    {
+      "query": "sp:\"Turdus migratorius\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "Black-capped Chickadee": [
+    {
+      "query": "sp:\"Poecile atricapillus\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "Steller's Jay": [
+    {
+      "query": "sp:\"Cyanocitta stelleri\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "Northern Flicker": [
+    {
+      "query": "sp:\"Colaptes auratus\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "Song Sparrow": [
+    {
+      "query": "sp:\"Melospiza melodia\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "Anna's Hummingbird": [
+    {
+      "query": "sp:\"Calypte anna\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "Dark-eyed Junco": [
+    {
+      "query": "sp:\"Junco hyemalis\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "American Crow": [
+    {
+      "query": "sp:\"Corvus brachyrhynchos\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "Pacific Wren": [
+    {
+      "query": "sp:\"Troglodytes pacificus\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "House Finch": [
+    {
+      "query": "sp:\"Haemorhous mexicanus\" q:A len:10-120",
+      "returned": 30
+    }
+  ],
+  "background": [
+    {
+      "query": "type:soundscape len:10-120 q:A",
+      "returned": 30
+    }
+  ]
+}

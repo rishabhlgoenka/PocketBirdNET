@@ -1,0 +1,15 @@
+# Main training / compression env — Python 3.11, CPU TensorFlow only
+# DO NOT add tensorflow-metal or any GPU path (see CLAUDE.md hard constraint #5)
+tensorflow
+tensorflow-model-optimization
+librosa
+soundfile
+numpy
+scikit-learn
+matplotlib
+pandas
+requests
+tqdm
+ipykernel
+ipywidgets
+notebook

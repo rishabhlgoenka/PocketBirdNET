@@ -1,0 +1,36 @@
+# Virtual environments
+.venv/
+.venv-birdnet/
+
+# Raw audio — NEVER commit (process-and-delete pipeline)
+data/_tmp_audio/
+*.mp3
+*.wav
+*.flac
+*.ogg
+
+# Large cached artifacts (track metadata.csv + small npz in git if desired)
+data/windows_raw.npz
+data/windows_meta.csv
+data/train.npz
+data/val.npz
+data/test.npz
+data/teacher_logits.npy
+data/_progress.json
+models/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# API keys / secrets — NEVER commit
+.env
+*.env

@@ -17,7 +17,6 @@ data/val.npz
 data/test.npz
 data/teacher_logits.npy
 data/_progress.json
-models/
 
 # Jupyter checkpoints
 .ipynb_checkpoints/

@@ -34,3 +34,10 @@ __pycache__/
 # API keys / secrets — NEVER commit
 .env
 *.env
+
+# Web dashboard build artifacts and dependencies
+web/node_modules/
+web/dist/
+
+# Claude Code dev tooling (launch.json, plans, etc.)
+.claude/

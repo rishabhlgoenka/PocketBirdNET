@@ -2,67 +2,103 @@
   "American Robin": [
     {
       "query": "sp:\"Turdus migratorius\" q:A len:10-120",
-      "returned": 30
+      "returned": 254
+    },
+    {
+      "query": "sp:\"Turdus migratorius\" q:B len:10-120",
+      "returned": 146
     }
   ],
   "Black-capped Chickadee": [
     {
       "query": "sp:\"Poecile atricapillus\" q:A len:10-120",
-      "returned": 30
+      "returned": 102
+    },
+    {
+      "query": "sp:\"Poecile atricapillus\" q:B len:10-120",
+      "returned": 200
     }
   ],
   "Steller's Jay": [
     {
       "query": "sp:\"Cyanocitta stelleri\" q:A len:10-120",
-      "returned": 30
+      "returned": 125
+    },
+    {
+      "query": "sp:\"Cyanocitta stelleri\" q:B len:10-120",
+      "returned": 131
     }
   ],
   "Northern Flicker": [
     {
       "query": "sp:\"Colaptes auratus\" q:A len:10-120",
-      "returned": 30
+      "returned": 121
+    },
+    {
+      "query": "sp:\"Colaptes auratus\" q:B len:10-120",
+      "returned": 163
     }
   ],
   "Song Sparrow": [
     {
       "query": "sp:\"Melospiza melodia\" q:A len:10-120",
-      "returned": 30
+      "returned": 400
     }
   ],
   "Anna's Hummingbird": [
     {
       "query": "sp:\"Calypte anna\" q:A len:10-120",
-      "returned": 30
+      "returned": 80
+    },
+    {
+      "query": "sp:\"Calypte anna\" q:B len:10-120",
+      "returned": 99
     }
   ],
   "Dark-eyed Junco": [
     {
       "query": "sp:\"Junco hyemalis\" q:A len:10-120",
-      "returned": 30
+      "returned": 171
+    },
+    {
+      "query": "sp:\"Junco hyemalis\" q:B len:10-120",
+      "returned": 229
     }
   ],
   "American Crow": [
     {
       "query": "sp:\"Corvus brachyrhynchos\" q:A len:10-120",
-      "returned": 30
+      "returned": 188
+    },
+    {
+      "query": "sp:\"Corvus brachyrhynchos\" q:B len:10-120",
+      "returned": 146
     }
   ],
   "Pacific Wren": [
     {
       "query": "sp:\"Troglodytes pacificus\" q:A len:10-120",
-      "returned": 30
+      "returned": 97
+    },
+    {
+      "query": "sp:\"Troglodytes pacificus\" q:B len:10-120",
+      "returned": 132
     }
   ],
   "House Finch": [
     {
       "query": "sp:\"Haemorhous mexicanus\" q:A len:10-120",
-      "returned": 30
+      "returned": 154
+    },
+    {
+      "query": "sp:\"Haemorhous mexicanus\" q:B len:10-120",
+      "returned": 208
     }
   ],
   "background": [
     {
       "query": "type:soundscape len:10-120 q:A",
-      "returned": 30
+      "returned": 400
     }
   ]
 }

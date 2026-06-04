@@ -1,12 +1,12 @@
 class_idx,species,f1_A,f1_B,f1_C,f1_D
-0,American Robin,0.0,0.5258,0.6867,0.6982
-1,Black-capped Chickadee,0.0,0.3544,0.381,0.3372
-2,Steller's Jay,0.0,0.338,0.3387,0.336
-3,Northern Flicker,0.0,0.3784,0.3312,0.327
-4,Song Sparrow,0.0,0.2154,0.1121,0.0943
-5,Anna's Hummingbird,0.0,0.887,0.6528,0.6438
-6,Dark-eyed Junco,0.0,0.4372,0.3684,0.3825
-7,American Crow,0.0,0.3205,0.5614,0.5714
-8,Pacific Wren,0.1624,0.7353,0.7442,0.7385
-9,House Finch,0.0,0.655,0.543,0.5676
-10,background,0.0,0.0,0.0,0.0
+0,American Robin,0.6861,0.6753,0.7304,0.721
+1,Black-capped Chickadee,0.656,0.6137,0.6268,0.621
+2,Steller's Jay,0.5678,0.5385,0.5676,0.558
+3,Northern Flicker,0.5256,0.515,0.5322,0.5348
+4,Song Sparrow,0.4998,0.5084,0.5205,0.5227
+5,Anna's Hummingbird,0.5092,0.5171,0.5323,0.5322
+6,Dark-eyed Junco,0.6457,0.622,0.6618,0.661
+7,American Crow,0.5855,0.5191,0.6287,0.6325
+8,Pacific Wren,0.6667,0.6786,0.7404,0.7448
+9,House Finch,0.6452,0.6673,0.6995,0.7066
+10,background,0.709,0.7417,0.7482,0.7442

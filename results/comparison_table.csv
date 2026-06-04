@@ -1,5 +1,5 @@
 variant,description,test_acc,test_macro_f1,size_kb,size_note,peak_ram_kb,ram_note,latency_ms_desktop_cpu,latency_ms_on_nano
-A,A — Scratch (hard labels),0.0884,0.0148,142.0,float32 weights,142.0,float32 param footprint (not deployable),26.96,TODO — measure on device
-B,B — Transfer (MobileNetV2),0.4657,0.4406,9143.3,float32 weights,9143.3,float32 param footprint (not deployable),32.71,TODO — measure on device
-C,"C — Distillation (BirdNET, T=4)",0.4551,0.4291,142.0,float32 weights,142.0,float32 param footprint (not deployable),24.98,TODO — measure on device
-D,D — Deploy (C + INT8 PTQ),0.4538,0.427,60.3,INT8 .tflite,84.8,INT8 tensor arena (conservative estimate),0.03,TODO — measure on device
+A,A — Scratch (hard labels),0.6186,0.6088,142.0,float32 weights,142.0,float32 param footprint (not deployable),12.35,TODO — measure on device
+B,B — Transfer (MobileNetV2),0.61,0.5997,9143.3,float32 weights,9143.3,float32 param footprint (not deployable),15.62,TODO — measure on device
+C,"C — Distillation (BirdNET, T=4)",0.6436,0.6353,142.0,float32 weights,142.0,float32 param footprint (not deployable),12.41,TODO — measure on device
+D,D — Deploy (C + INT8 PTQ),0.6421,0.6344,60.3,INT8 .tflite,84.8,INT8 tensor arena (conservative estimate),0.04,TODO — measure on device

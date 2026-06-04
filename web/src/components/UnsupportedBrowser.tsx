@@ -28,7 +28,7 @@ export function UnsupportedBrowser() {
         </div>
 
         <p className="text-xs text-muted">
-          Open at <code className="font-mono text-accent bg-accent-faint px-1.5 py-0.5 rounded">http://localhost:5173</code> in Chrome or Edge.
+          Reopen this page in Chrome or Edge to connect your Arduino board.
         </p>
       </motion.div>
     </div>

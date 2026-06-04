@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useBLE } from './hooks/useBLE'
 import type { Detection } from './types'
@@ -7,50 +7,22 @@ import { UnsupportedBrowser } from './components/UnsupportedBrowser'
 import { ConnectionBar } from './components/ConnectionBar'
 import { ListeningView } from './components/ListeningView'
 import { DetectionCard } from './components/DetectionCard'
+import { LandingPage } from './components/LandingPage'
+import { ResearchPage } from './components/ResearchPage'
 
-// ── Bird logo SVG ─────────────────────────────────────────────────────────
+type Page = 'home' | 'research'
+
+// ── Logo ──────────────────────────────────────────────────────────────────
 
 function BirdLogo({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 40 24" fill="currentColor">
-      {/* Two wings meeting at center body — classic bird-in-flight silhouette */}
       <path d="M2 12 C6 4 13 3 20 8 C27 3 34 4 38 12 C33 10 28 11 24 14 C22 15 21 16 20 16 C19 16 18 15 16 14 C12 11 7 10 2 12 Z"/>
     </svg>
   )
 }
 
-// ── Sub-views ──────────────────────────────────────────────────────────────
-
-function DisconnectedHero({ onConnect }: { onConnect: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -12 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="flex flex-col items-center justify-center py-20 gap-6 text-center"
-    >
-      <div className="w-20 h-20 rounded-2xl bg-accent-faint border border-accent-border flex items-center justify-center">
-        <BirdLogo className="w-12 h-8 text-accent" />
-      </div>
-      <div>
-        <h2 className="text-2xl font-bold text-ink mb-2">Ready when you are</h2>
-        <p className="text-muted max-w-xs leading-relaxed text-sm">
-          Connect your Arduino Nano 33 BLE Sense and press Listen to start identifying birds nearby.
-        </p>
-      </div>
-      <button
-        onClick={onConnect}
-        className="flex items-center gap-2 bg-accent hover:bg-accent-dark text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-card-md transition-colors"
-      >
-        Connect Board
-      </button>
-      <p className="text-xs text-subtle">
-        Chrome or Edge only. The browser will show its own device picker.
-      </p>
-    </motion.div>
-  )
-}
+// ── Detection sub-views ───────────────────────────────────────────────────
 
 function ScanningView() {
   return (
@@ -58,7 +30,7 @@ function ScanningView() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col items-center justify-center py-20 gap-5"
+      className="flex flex-col items-center justify-center py-24 gap-5"
     >
       <div className="relative w-14 h-14">
         <motion.div
@@ -81,7 +53,7 @@ function IdleView({ onStartListening }: { onStartListening: () => void }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col items-center justify-center py-20 gap-6 text-center"
+      className="flex flex-col items-center justify-center py-24 gap-6 text-center"
     >
       <div className="w-20 h-20 rounded-2xl bg-green-50 border border-green-200 flex items-center justify-center">
         <svg className="w-8 h-8 text-green-600" viewBox="0 0 24 24" fill="currentColor">
@@ -114,7 +86,7 @@ function ErrorView({ message, onRetry }: { message: string | null; onRetry: () =
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col items-center justify-center py-20 gap-5 text-center"
+      className="flex flex-col items-center justify-center py-24 gap-5 text-center"
     >
       <div className="w-14 h-14 rounded-full bg-red-50 border border-red-200 flex items-center justify-center">
         <svg className="w-6 h-6 text-red-500" viewBox="0 0 24 24" fill="currentColor">
@@ -139,22 +111,24 @@ function ErrorView({ message, onRetry }: { message: string | null; onRetry: () =
 
 export default function App() {
   const ble = useBLE()
-
-  // Whether the user has pressed "Start Listening" for this round
+  const [page, setPage] = useState<Page>('home')
   const [listeningActive, setListeningActive] = useState(false)
-
-  // The detection we are currently showing (locked until user dismisses)
   const [lockedDetection, setLockedDetection] = useState<Detection | null>(null)
+  // Track when the current listen session started so we never re-lock
+  // onto a detection that arrived before the user pressed "Listen for another".
+  const listenSinceRef = useRef<number>(0)
 
-  // When a qualifying detection arrives while we are listening, lock onto it
   useEffect(() => {
-    if (listeningActive && ble.detection !== null) {
+    if (
+      listeningActive &&
+      ble.detection !== null &&
+      ble.detection.timestamp > listenSinceRef.current
+    ) {
       setLockedDetection(ble.detection)
       setListeningActive(false)
     }
   }, [ble.detection, listeningActive])
 
-  // Clear UI state whenever the board disconnects
   useEffect(() => {
     if (ble.status !== 'connected') {
       setListeningActive(false)
@@ -162,73 +136,140 @@ export default function App() {
     }
   }, [ble.status])
 
-  const handleListenAgain = () => {
-    setLockedDetection(null)
-    setListeningActive(true)
+  if (typeof navigator !== 'undefined' && !navigator.bluetooth) {
+    return <UnsupportedBrowser />
   }
 
-  const handleStopListening = () => {
-    setListeningActive(false)
-  }
-
-  const unsupported = typeof navigator !== 'undefined' && !navigator.bluetooth
-  if (unsupported) return <UnsupportedBrowser />
-
-  const connected = ble.status === 'connected'
-  const showCard    = connected && lockedDetection !== null
-  const showListen  = connected && listeningActive
-  const showIdle    = connected && !listeningActive && !lockedDetection
+  const isLanding = ble.status === 'disconnected'
+  const connected  = ble.status === 'connected'
+  const showCard   = connected && lockedDetection !== null
+  const showListen = connected && listeningActive
+  const showIdle   = connected && !listeningActive && !lockedDetection
 
   return (
     <div className="min-h-screen bg-sheet flex flex-col">
-      {/* Header */}
+
+      {/* ── Header ── */}
       <header className="sticky top-0 z-50 bg-white border-b border-rule shadow-card">
-        <div className="max-w-2xl mx-auto px-5 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between gap-6">
+
+          {/* Logo */}
+          <button
+            onClick={() => setPage('home')}
+            className="flex items-center gap-2.5 flex-shrink-0 hover:opacity-80 transition-opacity"
+          >
             <BirdLogo className="w-8 h-6 text-accent" />
             <span className="font-bold text-sm tracking-wide text-ink">PocketBirdNET</span>
-          </div>
+          </button>
 
-          <ConnectionBar
-            status={ble.status}
-            onConnect={ble.connect}
-            onDisconnect={() => { ble.disconnect(); setLockedDetection(null); setListeningActive(false) }}
-          />
+          {/* Nav links */}
+          <nav className="flex items-center gap-1">
+            <button
+              onClick={() => setPage('research')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                page === 'research'
+                  ? 'bg-accent-faint text-accent'
+                  : 'text-muted hover:text-ink hover:bg-sheet'
+              }`}
+            >
+              About
+            </button>
+            <a
+              href="https://github.com/rishabhlgoenka/PocketBirdNET"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-muted hover:text-ink hover:bg-sheet transition-colors"
+            >
+              Source Code
+              <svg className="w-2.5 h-2.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+              </svg>
+            </a>
+            <a
+              href="https://github.com/kahst/BirdNET-Analyzer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-muted hover:text-ink hover:bg-sheet transition-colors"
+            >
+              BirdNET
+              <svg className="w-2.5 h-2.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+              </svg>
+            </a>
+          </nav>
+
+          {/* Connection bar (only when not on landing) */}
+          {!isLanding && (
+            <div className="flex-shrink-0">
+              <ConnectionBar
+                status={ble.status}
+                onConnect={ble.connect}
+                onDisconnect={() => {
+                  ble.disconnect()
+                  setLockedDetection(null)
+                  setListeningActive(false)
+                }}
+              />
+            </div>
+          )}
         </div>
       </header>
 
-      {/* Main */}
-      <main className="flex-1 max-w-2xl mx-auto w-full px-5 py-8">
+      {/* ── Main ── */}
+      <main className="flex-1 max-w-6xl mx-auto w-full px-6 py-6">
         <AnimatePresence mode="wait">
-          {ble.status === 'disconnected' && (
-            <DisconnectedHero key="disconnected" onConnect={ble.connect} />
+
+          {/* Research page — accessible from anywhere */}
+          {page === 'research' && (
+            <motion.div key="research" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <ResearchPage />
+            </motion.div>
           )}
-          {ble.status === 'scanning' && (
-            <ScanningView key="scanning" />
+
+          {/* Home / detection flow */}
+          {page === 'home' && (
+            <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <AnimatePresence mode="wait">
+                {isLanding && (
+                  <LandingPage key="landing" onConnect={ble.connect} />
+                )}
+                {ble.status === 'scanning' && (
+                  <ScanningView key="scanning" />
+                )}
+                {showIdle && (
+                  <IdleView key="idle" onStartListening={() => {
+                    listenSinceRef.current = Date.now()
+                    setListeningActive(true)
+                  }} />
+                )}
+                {showListen && (
+                  <ListeningView key="listening" onStop={() => setListeningActive(false)} />
+                )}
+                {showCard && (
+                  <DetectionCard
+                    key={`card-${lockedDetection!.timestamp}`}
+                    detection={lockedDetection!}
+                    onListenAgain={() => {
+                    setLockedDetection(null)
+                    listenSinceRef.current = Date.now()
+                    setListeningActive(true)
+                  }}
+                  />
+                )}
+                {ble.status === 'error' && (
+                  <ErrorView key="error" message={ble.error} onRetry={ble.connect} />
+                )}
+              </AnimatePresence>
+            </motion.div>
           )}
-          {showIdle && (
-            <IdleView key="idle" onStartListening={() => setListeningActive(true)} />
-          )}
-          {showListen && (
-            <ListeningView key="listening" onStop={handleStopListening} />
-          )}
-          {showCard && (
-            <DetectionCard
-              key={`card-${lockedDetection!.timestamp}`}
-              detection={lockedDetection!}
-              onListenAgain={handleListenAgain}
-            />
-          )}
-          {ble.status === 'error' && (
-            <ErrorView key="error" message={ble.error} onRetry={ble.connect} />
-          )}
+
         </AnimatePresence>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-rule px-5 py-3">
+      {/* ── Footer ── */}
+      <footer className="border-t border-rule px-6 py-3">
         <p className="text-center text-[11px] font-mono text-subtle">
-          Chrome or Edge only &nbsp;·&nbsp; Web Bluetooth &nbsp;·&nbsp; Open at localhost
+          Chrome or Edge only &nbsp;·&nbsp; Web Bluetooth API &nbsp;·&nbsp; Requires physical board
         </p>
       </footer>
     </div>

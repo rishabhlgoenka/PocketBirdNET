@@ -1,6 +1,6 @@
-# CLAUDE.md
+# Developer Notes
 
-Context for working in the PocketBirdNET repo. Read this before editing. Full detail in `PROJECT_PLAN.md`.
+Project invariants and development notes for PocketBirdNET. Full design rationale in `PROJECT_PLAN.md`.
 
 ## What this is
 

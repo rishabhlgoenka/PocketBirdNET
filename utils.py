@@ -8,7 +8,7 @@ The mel-spectrogram parameters below are locked to the on-device audio frontend
 in arduino/pocketbirdnet/audio_frontend/.  If you change *any* of these values
 you MUST update the C code in the same commit, or the model will fail silently on
 the Nano (the features will look correct in Python but differ bit-by-bit from what
-the device computes).  This is hard constraint #1 in CLAUDE.md.
+the device computes).  This is hard constraint #1 in DEVELOPER_NOTES.md.
 
 Locked parameters:
     SAMPLE_RATE  = 16000   Hz, mono
@@ -132,7 +132,7 @@ def recording_level_split(
 
     Splits are stratified by species and keyed on ``recording_id`` — every
     window from the same recording lands in exactly one split.  This
-    satisfies hard constraint #2 in CLAUDE.md (no window-level leakage).
+    satisfies hard constraint #2 in DEVELOPER_NOTES.md (no window-level leakage).
 
     Parameters
     ----------

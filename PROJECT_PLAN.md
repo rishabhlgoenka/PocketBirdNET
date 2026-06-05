@@ -141,7 +141,7 @@ PDM mic → rolling audio buffer → mel-spectrogram (matched frontend)
 
 ```
 pocketbirdnet/
-├── CLAUDE.md                     # agent context / invariants
+├── DEVELOPER_NOTES.md            # project invariants and developer notes
 ├── PROJECT_PLAN.md               # this file
 ├── requirements.txt              # main env
 ├── requirements-birdnet.txt      # teacher env

@@ -2,7 +2,7 @@
  * mel_frontend.h — Streaming log-mel spectrogram frontend
  *
  * DEVICE CONTRACT: parameters are locked to utils.py.  Change nothing here
- * without updating utils.py in the same commit (CLAUDE.md constraint #1).
+ * without updating utils.py in the same commit (DEVELOPER_NOTES.md constraint #1).
  *
  * Streaming API (replaces the old single-call compute_log_mel):
  *

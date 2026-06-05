@@ -183,8 +183,8 @@ and all ops in the standard LiteRT-Micro resolver before writing `model.h`.
 ## "File Changed on disk" prompt in Jupyter
 
 If you see *"File Changed on disk since the last time it was opened or saved — overwrite
-or revert?"*, always choose **Revert**.  This happens when the agent (or a script)
-rewrites a notebook while it is open in the browser.  Reverting loads the current disk
+or revert?"*, always choose **Revert**.  This happens when a script or external editor
+modifies a notebook while it is open in the browser.  Reverting loads the current disk
 version with the latest fixes; overwriting would clobber them.
 
 ---
@@ -225,7 +225,8 @@ a bug.
   update `arduino/pocketbirdnet/audio_frontend/` in the same commit or the deployed
   model will fail silently.
 - **Do not commit:** `.env`, raw audio (`*.mp3`, `*.wav`), `data/*.npz`,
-  `data/teacher_logits.npy`, `models/`, the API key anywhere.  All are in `.gitignore`.
+  `data/teacher_logits.npy`, or the API key anywhere.  All are in `.gitignore`.
+  Trained model files (`models/`) are committed and tracked normally.
 - **TFMOT / Keras 3 conflict.** `tensorflow-model-optimization` 0.8.x cannot prune
   Keras 3 functional models; `import tfmot` at the top of a notebook also redirects
   `tf.keras` → the legacy `tf_keras` loader, breaking `.keras` file loading.  Always
@@ -240,7 +241,7 @@ a bug.
 
 ```
 PocketBirdNET/
-├── CLAUDE.md                      # agent context / invariants (read this first)
+├── DEVELOPER_NOTES.md             # project invariants and developer notes
 ├── PROJECT_PLAN.md                # full design rationale and build order
 ├── README.md                      # this file
 ├── requirements.txt               # main env (.venv): TF, TFMOT, librosa, sklearn …
@@ -257,7 +258,7 @@ PocketBirdNET/
 │   ├── train.npz / val.npz / test.npz
 │   ├── metadata.csv               # recording_id, species, split (auditable)
 │   └── teacher_logits.npy
-├── models/                        # trained models (git-ignored)
+├── models/                        # trained model artifacts (committed)
 │   ├── A.keras / B.keras / C.keras
 │   └── D.tflite
 ├── results/                       # evaluation outputs
